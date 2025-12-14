@@ -1,6 +1,7 @@
 # policy-layers
 Layering of different liability policy structures 
 
+```mermaid
 flowchart TD
 
     %% ===== Ground-Up Loss Stack =====
@@ -57,3 +58,4 @@ flowchart TD
      
         E
     end
+```
