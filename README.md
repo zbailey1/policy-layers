@@ -4,40 +4,35 @@ Layering of different liability policy structures
 ```mermaid
 flowchart TD
 
-    %% ===== Ground-Up Loss Stack =====
-    L[Loss Occurs<br/>(Ground-Up)] --> R[Deductible or SIR]
+    %% Ground-Up Loss Stack
+    L[Loss Occurs - Ground Up] --> R[Deductible or SIR]
+    R --> P[Primary GL Policy - Per Occurrence Limit]
+    P --> E[Excess or Umbrella Policy]
 
-    R -->|After Retention| P[Primary GL Policy<br/>Per-Occurrence Limit]
-    P -->|If Exhausted| E[Excess / Umbrella Policy]
+    %% Deductible vs SIR Notes
+    R --- D1[Deductible: Insurer pays first, insured reimburses]
+    R --- D2[SIR: Insured pays first, insurer attaches after]
 
-    %% ===== Deductible vs SIR Notes =====
-    R --- D1[Deductible:<br/>Insurer pays first<br/>Insured reimburses]
-    R --- D2[SIR:<br/>Insured pays first<br/>Insurer attaches after]
-
-    %% ===== Aggregate Deductible Accumulation =====
-    AD1[Claim 1<br/>Deductible Paid] --> AD2[Claim 2<br/>Deductible Paid]
-    AD2 --> AD3[Claim 3<br/>Deductible Paid]
-    AD3 --> AD4[Claim 4<br/>Deductible Paid]
-
+    %% Aggregate Deductible Accumulation
+    AD1[Claim 1 Deductible Paid] --> AD2[Claim 2 Deductible Paid]
+    AD2 --> AD3[Claim 3 Deductible Paid]
+    AD3 --> AD4[Claim 4 Deductible Paid]
     AD4 --> ADCAP[Aggregate Deductible Reached]
+    ADCAP --> ADSTOP[Future claims have no deductible]
 
-    ADCAP --> ADSTOP[Future Claims<br/>No Deductible Applies]
-
-    %% ===== Aggregate Limit Erosion =====
-    O1[Occurrence 1<br/>Erodes Aggregate] --> O2[Occurrence 2<br/>Erodes Aggregate]
-    O2 --> O3[Occurrence 3<br/>Erodes Aggregate]
-
+    %% Aggregate Limit Erosion
+    O1[Occurrence 1 Erodes Aggregate] --> O2[Occurrence 2 Erodes Aggregate]
+    O2 --> O3[Occurrence 3 Erodes Aggregate]
     O3 --> AGGEX[General Aggregate Exhausted]
+    AGGEX --> NOCOV[No further primary GL coverage]
 
-    AGGEX --> NOCOV[No Further Primary GL Coverage]
-
-    %% ===== Logical Grouping =====
+    %% Grouping
     subgraph Retention
         L
         R
     end
 
-    subgraph Primary_Coverage
+    subgraph Primary
         P
         O1
         O2
@@ -55,7 +50,6 @@ flowchart TD
     end
 
     subgraph Excess
-     
         E
     end
 ```
